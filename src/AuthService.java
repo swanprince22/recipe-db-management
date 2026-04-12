@@ -13,6 +13,7 @@ public class AuthService {
     public User start() {
 
         while (true) {
+
             System.out.println("\n=== MENU ===");
             System.out.println("1. Login");
             System.out.println("2. Sign Up");
@@ -21,9 +22,10 @@ public class AuthService {
             String choice = sc.nextLine();
 
             if (choice.equals("1")) {
-                return login();
+                User user = login();
+                if (user != null) return user; 
             } else if (choice.equals("2")) {
-                signup();
+                signup(); 
             } else {
                 System.out.println("Invalid option.");
             }
@@ -34,49 +36,33 @@ public class AuthService {
 
         System.out.println("\n=== LOGIN ===");
 
-        for (int i = 1; i <= 3; i++) {
+        System.out.print("Username: ");
+        String username = sc.nextLine().trim();
 
-            System.out.print("Username: ");
-            String u = sc.nextLine();
+        System.out.print("Password: ");
+        String password = sc.nextLine().trim();
 
-            System.out.print("Password: ");
-            String p = sc.nextLine();
-
-            User user = authenticate(u, p);
-
-            if (user != null) {
-                System.out.println("Login successful!");
-                return user;
-            }
-
-            System.out.println("Failed attempt " + i + "/3");
-        }
-
-        System.out.println("Too many attempts.");
-        System.exit(0);
-        return null;
-    }
-
-    private User authenticate(String u, String p) {
-
-        String sql = "SELECT id, username FROM users WHERE username=? AND password=?";
+        String sql = "SELECT id, username FROM users WHERE username = ? AND password = ?";
 
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, u);
-            ps.setString(2, p);
+            ps.setString(1, username);
+            ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                System.out.println("Login successful!");
                 return new User(rs.getInt("id"), rs.getString("username"));
+            } else {
+                System.out.println("Invalid credentials.");
+                return null;
             }
 
         } catch (SQLException e) {
             System.out.println("Login error: " + e.getMessage());
+            return null;
         }
-
-        return null;
     }
 
     private void signup() {
@@ -84,17 +70,39 @@ public class AuthService {
         System.out.println("\n=== SIGN UP ===");
 
         System.out.print("Username: ");
-        String u = sc.nextLine();
+        String username = sc.nextLine().trim();
 
         System.out.print("Password: ");
-        String p = sc.nextLine();
+        String password = sc.nextLine().trim();
 
-        String sql = "INSERT INTO users(username, password) VALUES(?, ?)";
+        if (username.isEmpty() || password.isEmpty()) {
+            System.out.println("Username and password cannot be empty.");
+            return;
+        }
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        String checkSql = "SELECT id FROM users WHERE username = ?";
 
-            ps.setString(1, u);
-            ps.setString(2, p);
+        try (PreparedStatement check = conn.prepareStatement(checkSql)) {
+
+            check.setString(1, username);
+            ResultSet rs = check.executeQuery();
+
+            if (rs.next()) {
+                System.out.println("Username already exists.");
+                return;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error checking user: " + e.getMessage());
+            return;
+        }
+
+        String insertSql = "INSERT INTO users(username, password) VALUES(?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
+
+            ps.setString(1, username);
+            ps.setString(2, password);
 
             ps.executeUpdate();
             System.out.println("Account created!");

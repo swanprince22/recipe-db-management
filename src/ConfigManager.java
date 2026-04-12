@@ -6,7 +6,7 @@ public class ConfigManager {
     "jdbc:mysql://127.0.0.1:3306/recipes_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
     private static final String USER = "root";
-    private static final String PASS = "P@ssw0rd1";
+    private static final String PASS = ""; //add password
 
     public static Connection getConnection() {
 

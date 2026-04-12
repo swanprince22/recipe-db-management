@@ -9,8 +9,4 @@ public class Session {
     public static User getUser() {
         return currentUser;
     }
-
-    public static void clear() {
-        currentUser = null;
-    }
 }
