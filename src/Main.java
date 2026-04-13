@@ -1,8 +1,13 @@
 import java.sql.Connection;
 
+import auth.AuthService;
+import auth.Session;
 import db.DBConnection;
+import db.DBInit;
+import model.User;
 import db.DBBootstrap;
 
+/* App? entry point? */
 public class Main {
 
     public static void main(String[] args) {
@@ -16,7 +21,7 @@ public class Main {
             return;
         }
 
-        DatabaseInitializer.initTables(conn);
+        DBInit.initTables(conn);
 
         AuthService auth = new AuthService(conn);
         User user = auth.start();

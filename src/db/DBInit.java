@@ -1,6 +1,7 @@
+package db;
 import java.sql.*;
 
-public class DatabaseInitializer {
+public class DBInit {
 
     public static void initTables(Connection conn) {
 

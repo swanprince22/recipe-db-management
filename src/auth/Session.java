@@ -1,3 +1,6 @@
+package auth;
+import model.User;
+
 public class Session {
 
     private static User currentUser;
