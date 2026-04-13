@@ -54,9 +54,10 @@ public class AuthService {
 
             ResultSet rs = ps.executeQuery();
 
+            // Part needs refining this kind of auth design
             if (rs.next()) {
                 System.out.println("Login successful!");
-                return new User(rs.getInt("id"), rs.getString("username"));
+                return new User(rs.getInt("id"), rs.getString("username"), "B@L3");
             } else {
                 System.out.println("Invalid credentials.");
                 return null;
