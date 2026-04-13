@@ -1,19 +1,16 @@
+package db;
 import java.sql.*;
 
-public class ConfigManager {
-
-   private static final String URL =
-    "jdbc:mysql://127.0.0.1:3306/recipes_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-
-    private static final String USER = "root";
-    private static final String PASS = ""; //add password
+public class DBConnection {
 
     public static Connection getConnection() {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            Connection conn = DriverManager.getConnection(URL, USER, PASS);
+            Connection conn = DriverManager.getConnection(DBConfig.getAppURL(), 
+                                                          DBConfig.getUser(), 
+                                                          DBConfig.getPassword());
             System.out.println("Database connected successfully.");
             return conn;
 
