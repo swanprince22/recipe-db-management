@@ -1,11 +1,6 @@
 # recipe-db-management
 
-Angela log (Apr. 13)
-CMD to out files on bin/ and access mysqlconnector jar in lib/
-- javac -cp "lib/*" -d bin src/*.java
-- java -cp "bin:lib/*" Main
-- Outdated above (use Makefile instead)
-
+Angela Log (Apr. 13)
 Makefile
 - make compile: Compiles all packages
 - make run: Runs the app
@@ -16,10 +11,11 @@ Directories
 - dao/ for DAO classes
 
 Env file
-- Naming convention: DB_* where asterisk represents non-prexied variable name
+- Naming convention: DB_* where asterisk represents non-prefixed variable name
 
 Project definitions
 - Bootstrap: loading the program
 
-To be added in Makefile
-- src/model/*.java src/dao/*.java
+Notes
+- java files in model directory still need rechecking while on further stage of deployment
+- model/ should align to final/approved relation design
