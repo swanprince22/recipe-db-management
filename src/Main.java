@@ -1,12 +1,15 @@
 import java.sql.Connection;
 
+import db.DBConnection;
+import db.DBBootstrap;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        DatabaseBootstrap.initDatabase();
+        DBBootstrap.initDatabase();
 
-        Connection conn = ConfigManager.getConnection();
+        Connection conn = DBConnection.getConnection();
 
         if (conn == null) {
             System.out.println("Cannot start app.");
